@@ -4,6 +4,7 @@ import networkx as nx
 from collections import defaultdict
 
 print("PBL")
+print("hello")
 
 # Sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
