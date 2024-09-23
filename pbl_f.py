@@ -3,16 +3,18 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from collections import defaultdict
 
+print("PBL")
+
 # Sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
-    'DEL': 'Indira Gandhi International Airport',
+    'DEL': 'Indira Gandhi International Airport (IGI)',
     'BOM': 'Chhatrapati Shivaji Maharaj International Airport',
     'BLR': 'Kempegowda International Airport',
     'MAA': 'Chennai International Airport',
     'HYD': 'Rajiv Gandhi International Airport',
     'CCU': 'Netaji Subhas Chandra Bose International Airport',
     'GOI': 'Dabolim Airport',
-    'PNQ': 'Pune Airport',
+    'PNQ': 'Pune Airport(PNQ)',
     'AMD': 'Sardar Vallabhbhai Patel International Airport',
 }
 
