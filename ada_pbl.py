@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 from collections import defaultdict
+import streamlit as st
 
 # Sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
@@ -27,3 +28,9 @@ class Graph:
     def __init__(self, vertices):
         self.V = vertices
         self.graph = defaultdict(list)
+
+# Streamlit Interface
+st.title("Airport Route Analyzer")
+
+# Sidebar for navigation
+page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization"])
