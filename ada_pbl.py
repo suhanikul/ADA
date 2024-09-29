@@ -22,3 +22,8 @@ flight_routes = [
     # PNQ and AMD are connected in a way that doesn't form an SCC
     ('PNQ', 'AMD'), ('AMD', 'PNQ'),('DEL','BOM'),('DEL','PNQ')
 ]
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = defaultdict(list)
