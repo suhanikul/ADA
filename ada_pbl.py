@@ -29,6 +29,29 @@ class Graph:
         self.V = vertices
         self.graph = defaultdict(list)
 
+
+
+    def kosaraju_scc(self):
+        stack = []
+        visited = {v: False for v in self.V}
+        
+        for v in self.V:
+            if not visited[v]:
+                self.dfs_fill_order(v, visited, stack)
+        
+        transposed_graph = self.transpose()
+        visited = {v: False for v in self.V}
+        sccs = []
+        
+        while stack:
+            v = stack.pop()
+            if not visited[v]:
+                scc = []
+                transposed_graph.dfs_collect_scc(v, visited, scc)
+                sccs.append(scc)
+        
+        return sccs
+    
 # Streamlit Interface
 st.title("Airport Route Analyzer")
 
