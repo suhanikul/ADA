@@ -30,8 +30,15 @@ class Graph:
         self.graph = defaultdict(list)
 
     def add_edge(self, u, v):
-        self.graph[u].append(v)     
-  
+        self.graph[u].append(v)   
+
+    def dfs_fill_order(self, v, visited, stack):
+        visited[v] = True
+        for neighbor in self.graph[v]:
+            if not visited[neighbor]:
+                self.dfs_fill_order(neighbor, visited, stack)
+        stack.append(v)
+     
 
     def kosaraju_scc(self):
         stack = []
