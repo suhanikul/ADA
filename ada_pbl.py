@@ -14,14 +14,17 @@ airports = {
     'GOI': 'Dabolim Airport',
     'PNQ': 'Pune Airport',
     'AMD': 'Sardar Vallabhbhai Patel International Airport',
+    'JAI': 'Jaipur International Airport',  # Added new airport
+    'TRV': 'Trivandrum International Airport',  # Added new airport
+    'LKO': 'Chaudhary Charan Singh International Airport',  # Added new airport
 }
 
 flight_routes = [
-    #These form SSC
+    # These form SSC
     ('GOI', 'BOM'), ('DEL', 'BLR'), ('BOM', 'HYD'), ('BLR', 'MAA'),
-    ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'),('BLR', 'DEL'),
-    # PNQ and AMD are connected in a way that doesn't form an SCC
-    ('PNQ', 'AMD'), ('AMD', 'PNQ'),('DEL','BOM'),('DEL','PNQ')
+    ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'), ('BLR', 'DEL'),
+    ('PNQ', 'AMD'), ('AMD', 'PNQ'), ('DEL', 'BOM'), ('DEL', 'PNQ'),
+    ('JAI', 'TRV'), ('TRV', 'LKO'), ('LKO', 'JAI') 
 ]
 
 class Graph:
@@ -38,14 +41,7 @@ class Graph:
             if not visited[neighbor]:
                 self.dfs_fill_order(neighbor, visited, stack)
         stack.append(v)
-        self.graph[u].append(v) 
-
-    def transpose(self):
-        g_t = Graph(self.V)
-        for node in self.graph:
-            for neighbor in self.graph[node]:
-                g_t.add_edge(neighbor, node)
-        return g_t    
+        self.graph[u].append(v)     
 
     def dfs_collect_scc(self, v, visited, scc):
         visited[v] = True
@@ -53,8 +49,7 @@ class Graph:
         for neighbor in self.graph[v]:
             if not visited[neighbor]:
                 self.dfs_collect_scc(neighbor, visited, scc)
-    
-    #JIRA TASK AP-2 "Function for Kosaraju"
+  
     def kosaraju_scc(self):
         stack = []
         visited = {v: False for v in self.V}
@@ -75,7 +70,7 @@ class Graph:
                 sccs.append(scc)
         return sccs
       
- # Dijkstra's algorithm for shortest path JIRA TASK AP-4
+ # Dijkstra's algorithm for shortest path
 def dijkstra(graph, source, target):
     G = nx.DiGraph()
     for u, v in graph:
@@ -86,14 +81,6 @@ def dijkstra(graph, source, target):
         return path
     except nx.NetworkXNoPath:
         return None
-    
-# Prepare the graph
-g = Graph(list(airports.keys()))
-for u, v in flight_routes:
-    g.add_edge(u, v)
-
-# Precompute SCCs
-sccs = g.kosaraju_scc()
    
 # Streamlit Interface
 st.title("Airport Route Analyzer")
@@ -107,7 +94,7 @@ if page == "Home":
     st.write("Navigate through the sidebar to explore different features.")
 
 
-# Task ID in Jira: AP-7 - correct order of pages
+# JIRA Task ID in Jira: AP-7 - correct order of pages
 # Page 2: SCC Analysis
 elif page == "SCC Analysis":
     st.header("Strongly Connected Components (SCC) Analysis")
@@ -158,7 +145,7 @@ elif page == "Graph Visualization":
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, verticalalignment='center')
 
     # Highlight SCCs with different colors
-    colors = ['red', 'green', 'blue', 'yellow', 'orange']
+    colors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple']
     for i, scc in enumerate(sccs):
         nx.draw_networkx_nodes(G, pos, nodelist=scc, node_color=colors[i % len(colors)], node_size=700)
 
