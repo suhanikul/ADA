@@ -3,8 +3,8 @@ import networkx as nx
 from collections import defaultdict
 import streamlit as st
 
-# Sample data representing Indian airports (nodes) and flight routes (edges)
 #JIRA TASK AP-9 Re-update dataset
+# Sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
     'DEL': 'Indira Gandhi International Airport',
     'BOM': 'Chhatrapati Shivaji Maharaj International Airport',
@@ -25,40 +25,14 @@ airports = {
 }
 
 flight_routes = [
-    # SCC 1
-    ('DEL', 'BLR'), ('BLR', 'MAA'), ('MAA', 'CCU'), ('CCU', 'HYD'),
-    ('HYD', 'BOM'), ('BOM', 'DEL'),
-
-    # SCC 2
-    ('GOI', 'PNQ'), ('PNQ', 'AMD'), ('AMD', 'GOI'),
-
-    # SCC 3
-    ('COK', 'TRV'), ('TRV', 'COK'),
-
-    # SCC 4
-    ('IXC', 'SXR'), ('SXR', 'IXC'),
-
-    # Connections between SCCs
-    ('BLR', 'GOI'), ('HYD', 'COK'), ('MAA', 'PNQ'), ('BOM', 'JAI'),
-
-    # Additional routes forming cycles
-    ('JAI', 'LKO'), ('LKO', 'PAT'), ('PAT', 'BBI'), ('BBI', 'GAU'),
-    ('GAU', 'IXB'), ('IXB', 'GAU'),
-
-    ('GAU', 'SXR'),  # One-way edge
-    ('IXB', 'CCU'),  # Connecting back to SCC 1
-
-    # Additional edges
-    ('IDR', 'PNQ'), ('PNQ', 'IDR'),  # Forms a cycle between IDR and PNQ
-    ('JAI', 'IDR'),  # Connects JAI to IDR
-    ('IXC', 'JAI'),  # Connects IXC to JAI
-    ('SXR', 'IXB'),  # Connects SXR to IXB
-    ('DEL', 'IXC'),  # Connects DEL to IXC
-
-    # Edges that don't form SCCs
-    ('TRV', 'GAU'),  # One-way edge
-    ('COK', 'BLR'),  # One-way edge
-    ('AMD', 'COK'),  # One-way edge
+    ('GOI', 'BOM'), ('DEL', 'BLR'), ('BOM', 'HYD'), ('BLR', 'MAA'),
+    ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'), ('BLR', 'DEL'),
+    ('PNQ', 'AMD'), ('AMD', 'PNQ'), ('DEL', 'BOM'), ('DEL', 'PNQ'),
+    ('JAI', 'TRV'), ('TRV', 'LKO'), ('LKO', 'JAI'),
+    ('IXB', 'COK'), 
+    ('COK', 'STV'),
+    ('STV', 'VGA'),
+    ('VGA', 'IXB'),  
 ]
 
 
