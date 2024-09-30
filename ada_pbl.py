@@ -3,7 +3,7 @@ import networkx as nx
 from collections import defaultdict
 import streamlit as st
 
-# Sample data representing Indian airports (nodes) and flight routes (edges)
+# Updated sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
     'DEL': 'Indira Gandhi International Airport',
     'BOM': 'Chhatrapati Shivaji Maharaj International Airport',
@@ -14,15 +14,57 @@ airports = {
     'GOI': 'Dabolim Airport',
     'PNQ': 'Pune Airport',
     'AMD': 'Sardar Vallabhbhai Patel International Airport',
+    'COK': 'Cochin International Airport',
+    'JAI': 'Jaipur International Airport',
+    'LKO': 'Chaudhary Charan Singh International Airport',
+    'PAT': 'Jay Prakash Narayan International Airport',
+    'BBI': 'Biju Patnaik International Airport',
+    'GAU': 'Lokpriya Gopinath Bordoloi International Airport',
+    'TRV': 'Trivandrum International Airport',
+    'IXC': 'Chandigarh Airport',
+    'IDR': 'Devi Ahilya Bai Holkar Airport',
+    'IXB': 'Bagdogra Airport',
+    'SXR': 'Sheikh Ul-Alam International Airport',
 }
 
 flight_routes = [
-    #These form SSC
-    ('GOI', 'BOM'), ('DEL', 'BLR'), ('BOM', 'HYD'), ('BLR', 'MAA'),
-    ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'),('BLR', 'DEL'),
-    # PNQ and AMD are connected in a way that doesn't form an SCC
-    ('PNQ', 'AMD'), ('AMD', 'PNQ'),('DEL','BOM'),('DEL','PNQ')
+    # SCC 1
+    ('DEL', 'BLR'), ('BLR', 'MAA'), ('MAA', 'CCU'), ('CCU', 'HYD'),
+    ('HYD', 'BOM'), ('BOM', 'DEL'),
+
+    # SCC 2
+    ('GOI', 'PNQ'), ('PNQ', 'AMD'), ('AMD', 'GOI'),
+
+    # SCC 3
+    ('COK', 'TRV'), ('TRV', 'COK'),
+
+    # SCC 4
+    ('IXC', 'SXR'), ('SXR', 'IXC'),
+
+    # Connections between SCCs
+    ('BLR', 'GOI'), ('HYD', 'COK'), ('MAA', 'PNQ'), ('BOM', 'JAI'),
+
+    # Additional routes forming cycles
+    ('JAI', 'LKO'), ('LKO', 'PAT'), ('PAT', 'BBI'), ('BBI', 'GAU'),
+    ('GAU', 'IXB'), ('IXB', 'GAU'),
+
+    ('GAU', 'SXR'),  # One-way edge
+    ('IXB', 'CCU'),  # Connecting back to SCC 1
+
+    # Additional edges
+    ('IDR', 'PNQ'), ('PNQ', 'IDR'),  # Forms a cycle between IDR and PNQ
+    ('JAI', 'IDR'),  # Connects JAI to IDR
+    ('IXC', 'JAI'),  # Connects IXC to JAI
+    ('SXR', 'IXB'),  # Connects SXR to IXB
+    ('DEL', 'IXC'),  # Connects DEL to IXC
+
+    # Edges that don't form SCCs
+    ('TRV', 'GAU'),  # One-way edge
+    ('COK', 'BLR'),  # One-way edge
+    ('AMD', 'COK'),  # One-way edge
 ]
+
+
 
 class Graph:
     def __init__(self, vertices):
@@ -91,7 +133,7 @@ if page == "Home":
     st.write("Navigate through the sidebar to explore different features.")
 
 
-# Task ID in Jira: AP-7 - correct order of pages
+# JIRA Task ID in Jira: AP-7 - correct order of pages
 # Page 2: SCC Analysis
 elif page == "SCC Analysis":
     st.header("Strongly Connected Components (SCC) Analysis")
@@ -142,7 +184,7 @@ elif page == "Graph Visualization":
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, verticalalignment='center')
 
     # Highlight SCCs with different colors
-    colors = ['red', 'green', 'blue', 'yellow', 'orange']
+    colors = ['red', 'green', 'blue', 'yellow', 'orange', 'purple', 'pink']
     for i, scc in enumerate(sccs):
         nx.draw_networkx_nodes(G, pos, nodelist=scc, node_color=colors[i % len(colors)], node_size=700)
 
