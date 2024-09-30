@@ -70,7 +70,7 @@ def dijkstra(graph, source, target):
 st.title("Airport Route Analyzer")
 
 # Sidebar for navigation
-page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization"])
+page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization", "Shortest Path"])
 
 # Page 1: Home
 if page == "Home":
