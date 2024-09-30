@@ -27,33 +27,24 @@ To set up the project locally, follow these steps:
    git clone <repository-url>
    cd <repository-folder>
 Create a virtual environment (optional but recommended):
-
-bash
-Copy code
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-Install required packages: Make sure you have pip installed, then run:
 
-bash
-Copy code
-pip install -r requirements.txt
 Run the application: Start the Streamlit server:
-
-bash
-Copy code
 streamlit run app.py
+
 Open your web browser: Navigate to http://localhost:8501 to access the application.
 
 Usage
-Home Page: Overview and navigation options.
-SCC Analysis:
-Select a source and destination airport.
-Click "Check" to see if both airports belong to the same SCC.
-Graph Visualization:
-Displays a visual representation of the airport network.
-Strongly connected components are highlighted in different colors.
-Shortest Path:
-Choose source and destination airports.
-Click "Find Shortest Path" to display the route, if available.
+1. Home Page: Overview and navigation options.
+2. SCC Analysis:
+   Select a source and destination airport.
+   Click "Check" to see if both airports belong to the same SCC.
+3. Graph Visualization:
+   Displays a visual representation of the airport network.
+   Strongly connected components are highlighted in different colors.
+4. Shortest Path:
+   Choose source and destination airports.
+   Click "Find Shortest Path" to display the route, if available.
 Sample Data
 The application includes sample data representing Indian airports and their flight routes. You can modify the airports and flight_routes dictionaries in the code to add or remove airports and routes.
