@@ -65,7 +65,6 @@ class Graph:
                 scc = []
                 transposed_graph.dfs_collect_scc(v, visited, scc)
                 sccs.append(scc)
-        
         return sccs
       
  # Dijkstra's algorithm for shortest path
@@ -91,6 +90,28 @@ if page == "Home":
     st.image("AIRPORT FINDER.png", use_column_width=True)
     st.write("Navigate through the sidebar to explore different features.")
 
+
+# Task ID in Jira: AP-7 - correct order of pages
+# Page 2: SCC Analysis
+elif page == "SCC Analysis":
+    st.header("Strongly Connected Components (SCC) Analysis")
+
+    # Dropdowns for selecting source and destination airports
+    source_airport = st.selectbox("Select Source Airport", list(airports.keys()), format_func=lambda x: airports[x])
+    destination_airport = st.selectbox("Select Destination Airport", list(airports.keys()), format_func=lambda x: airports[x])
+
+    if st.button("Check"):
+        # Find the SCC containing the source airport
+        scc_found = None
+        for scc in sccs:
+            if source_airport in scc:
+                scc_found = scc
+                break
+        
+        if scc_found and destination_airport in scc_found:
+            st.success(f"{airports[source_airport]} and {airports[destination_airport]} are in the same SCC.")
+        else:
+            st.error(f"{airports[source_airport]} and {airports[destination_airport]} are NOT in the same SCC.")
 
 # Page 3: Graph Visualization
 elif page == "Graph Visualization":
@@ -126,27 +147,6 @@ elif page == "Graph Visualization":
         nx.draw_networkx_nodes(G, pos, nodelist=scc, node_color=colors[i % len(colors)], node_size=700)
 
     st.pyplot(plt)
-
-# Page 2: SCC Analysis
-elif page == "SCC Analysis":
-    st.header("Strongly Connected Components (SCC) Analysis")
-
-    # Dropdowns for selecting source and destination airports
-    source_airport = st.selectbox("Select Source Airport", list(airports.keys()), format_func=lambda x: airports[x])
-    destination_airport = st.selectbox("Select Destination Airport", list(airports.keys()), format_func=lambda x: airports[x])
-
-    if st.button("Check"):
-        # Find the SCC containing the source airport
-        scc_found = None
-        for scc in sccs:
-            if source_airport in scc:
-                scc_found = scc
-                break
-        
-        if scc_found and destination_airport in scc_found:
-            st.success(f"{airports[source_airport]} and {airports[destination_airport]} are in the same SCC.")
-        else:
-            st.error(f"{airports[source_airport]} and {airports[destination_airport]} are NOT in the same SCC.")
 
 # Page 4: Shortest Path
 elif page == "Shortest Path":
