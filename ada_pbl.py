@@ -84,6 +84,42 @@ if page == "Home":
     st.image("AIRPORT FINDER.png", use_column_width=True)
     st.write("Navigate through the sidebar to explore different features.")
 
+
+# Page 3: Graph Visualization
+elif page == "Graph Visualization":
+    st.header("Airport Route Graph Visualization")
+
+    # Visualize the graph using Matplotlib and NetworkX
+    G = nx.DiGraph()
+
+    # Add nodes and edges to the graph
+    for airport in airports.keys():
+        G.add_node(airport)
+
+    for u, v in flight_routes:
+        G.add_edge(u, v)
+
+    # Draw the graph with SCCs highlighted
+    pos = nx.spring_layout(G, seed=42)
+    plt.figure(figsize=(12, 10))
+
+    # Draw nodes
+    nx.draw_networkx_nodes(G, pos, node_size=700, node_color='skyblue')
+
+    # Draw edges
+    nx.draw_networkx_edges(G, pos, edgelist=flight_routes, arrowstyle='->', arrowsize=20)
+
+    # Draw node labels with codes only
+    labels = {node: node for node in G.nodes}
+    nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, verticalalignment='center')
+
+    # Highlight SCCs with different colors
+    colors = ['red', 'green', 'blue', 'yellow', 'orange']
+    for i, scc in enumerate(sccs):
+        nx.draw_networkx_nodes(G, pos, nodelist=scc, node_color=colors[i % len(colors)], node_size=700)
+
+    st.pyplot(plt)
+
 # Page 4: Shortest Path
 elif page == "Shortest Path":
     st.header("Shortest Path Finder")
