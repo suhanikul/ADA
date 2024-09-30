@@ -18,15 +18,49 @@ airports = {
     'JAI': 'Jaipur International Airport',  # Added new airport
     'TRV': 'Trivandrum International Airport',  # Added new airport
     'LKO': 'Chaudhary Charan Singh International Airport',  # Added new airport
+    'IXB': 'Bagdogra Airport',  # New airport
+    'COK': 'Cochin International Airport',  # New airport
+    'STV': 'Surat Airport',  # New airport
+    'VGA': 'Vadodara Airport',  # New airport
 }
 
 flight_routes = [
-    # These form SSC
-    ('GOI', 'BOM'), ('DEL', 'BLR'), ('BOM', 'HYD'), ('BLR', 'MAA'),
-    ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'), ('BLR', 'DEL'),
-    ('PNQ', 'AMD'), ('AMD', 'PNQ'), ('DEL', 'BOM'), ('DEL', 'PNQ'),
-    ('JAI', 'TRV'), ('TRV', 'LKO'), ('LKO', 'JAI')  # New routes forming SCC
+    # SCC 1
+    ('DEL', 'BLR'), ('BLR', 'MAA'), ('MAA', 'CCU'), ('CCU', 'HYD'),
+    ('HYD', 'BOM'), ('BOM', 'DEL'),
+
+    # SCC 2
+    ('GOI', 'PNQ'), ('PNQ', 'AMD'), ('AMD', 'GOI'),
+
+    # SCC 3
+    ('COK', 'TRV'), ('TRV', 'COK'),
+
+    # SCC 4
+    ('IXC', 'SXR'), ('SXR', 'IXC'),
+
+    # Connections between SCCs
+    ('BLR', 'GOI'), ('HYD', 'COK'), ('MAA', 'PNQ'), ('BOM', 'JAI'),
+
+    # Additional routes forming cycles
+    ('JAI', 'LKO'), ('LKO', 'PAT'), ('PAT', 'BBI'), ('BBI', 'GAU'),
+    ('GAU', 'IXB'), ('IXB', 'GAU'),
+
+    ('GAU', 'SXR'),  # One-way edge
+    ('IXB', 'CCU'),  # Connecting back to SCC 1
+
+    # Additional edges
+    ('IDR', 'PNQ'), ('PNQ', 'IDR'),  # Forms a cycle between IDR and PNQ
+    ('JAI', 'IDR'),  # Connects JAI to IDR
+    ('IXC', 'JAI'),  # Connects IXC to JAI
+    ('SXR', 'IXB'),  # Connects SXR to IXB
+    ('DEL', 'IXC'),  # Connects DEL to IXC
+
+    # Edges that don't form SCCs
+    ('TRV', 'GAU'),  # One-way edge
+    ('COK', 'BLR'),  # One-way edge
+    ('AMD', 'COK'),  # One-way edge
 ]
+
 
 
 class Graph:
@@ -43,14 +77,14 @@ class Graph:
             if not visited[neighbor]:
                 self.dfs_fill_order(neighbor, visited, stack)
         stack.append(v)
-        self.graph[u].append(v) 
+        self.graph[u].append(v)   
 
     def transpose(self):
         g_t = Graph(self.V)
         for node in self.graph:
             for neighbor in self.graph[node]:
                 g_t.add_edge(neighbor, node)
-        return g_t    
+        return g_t
 
     def dfs_collect_scc(self, v, visited, scc):
         visited[v] = True
@@ -58,8 +92,7 @@ class Graph:
         for neighbor in self.graph[v]:
             if not visited[neighbor]:
                 self.dfs_collect_scc(neighbor, visited, scc)
-    
-    #JIRA TASK AP-2 "Function for Kosaraju"
+  
     def kosaraju_scc(self):
         stack = []
         visited = {v: False for v in self.V}
@@ -80,7 +113,7 @@ class Graph:
                 sccs.append(scc)
         return sccs
       
- # Dijkstra's algorithm for shortest path JIRA TASK AP-4
+ # Dijkstra's algorithm for shortest path
 def dijkstra(graph, source, target):
     G = nx.DiGraph()
     for u, v in graph:
@@ -91,7 +124,7 @@ def dijkstra(graph, source, target):
         return path
     except nx.NetworkXNoPath:
         return None
-    
+
 # Prepare the graph
 g = Graph(list(airports.keys()))
 for u, v in flight_routes:
@@ -99,7 +132,6 @@ for u, v in flight_routes:
 
 # Precompute SCCs
 sccs = g.kosaraju_scc()
-   
 # Streamlit Interface
 st.title("Airport Route Analyzer")
 
