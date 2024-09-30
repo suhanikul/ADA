@@ -17,6 +17,10 @@ airports = {
     'JAI': 'Jaipur International Airport',  # Added new airport
     'TRV': 'Trivandrum International Airport',  # Added new airport
     'LKO': 'Chaudhary Charan Singh International Airport',  # Added new airport
+    'IXB': 'Bagdogra Airport',  # New airport
+    'COK': 'Cochin International Airport',  # New airport
+    'STV': 'Surat Airport',  # New airport
+    'VGA': 'Vadodara Airport',  # New airport
 }
 
 flight_routes = [
@@ -24,7 +28,8 @@ flight_routes = [
     ('GOI', 'BOM'), ('DEL', 'BLR'), ('BOM', 'HYD'), ('BLR', 'MAA'),
     ('MAA', 'CCU'), ('HYD', 'CCU'), ('CCU', 'DEL'), ('BLR', 'DEL'),
     ('PNQ', 'AMD'), ('AMD', 'PNQ'), ('DEL', 'BOM'), ('DEL', 'PNQ'),
-    ('JAI', 'TRV'), ('TRV', 'LKO'), ('LKO', 'JAI') 
+    ('JAI', 'TRV'), ('TRV', 'LKO'), ('LKO', 'JAI'),
+    ('IXB', 'COK'), ('COK', 'STV'),('STV', 'VGA'),('VGA', 'IXB'),  
 ]
 
 class Graph:
