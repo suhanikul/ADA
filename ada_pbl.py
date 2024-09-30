@@ -30,6 +30,14 @@ class Graph:
         self.graph = defaultdict(list)
 
     def add_edge(self, u, v):
+        self.graph[u].append(v)   
+
+    def dfs_fill_order(self, v, visited, stack):
+        visited[v] = True
+        for neighbor in self.graph[v]:
+            if not visited[neighbor]:
+                self.dfs_fill_order(neighbor, visited, stack)
+        stack.append(v)
         self.graph[u].append(v)     
 
     def dfs_collect_scc(self, v, visited, scc):
@@ -39,7 +47,6 @@ class Graph:
             if not visited[neighbor]:
                 self.dfs_collect_scc(neighbor, visited, scc)
   
-
     def kosaraju_scc(self):
         stack = []
         visited = {v: False for v in self.V}
@@ -83,6 +90,42 @@ page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Vis
 if page == "Home":
     st.image("AIRPORT FINDER.png", use_column_width=True)
     st.write("Navigate through the sidebar to explore different features.")
+
+
+# Page 3: Graph Visualization
+elif page == "Graph Visualization":
+    st.header("Airport Route Graph Visualization")
+
+    # Visualize the graph using Matplotlib and NetworkX
+    G = nx.DiGraph()
+
+    # Add nodes and edges to the graph
+    for airport in airports.keys():
+        G.add_node(airport)
+
+    for u, v in flight_routes:
+        G.add_edge(u, v)
+
+    # Draw the graph with SCCs highlighted
+    pos = nx.spring_layout(G, seed=42)
+    plt.figure(figsize=(12, 10))
+
+    # Draw nodes
+    nx.draw_networkx_nodes(G, pos, node_size=700, node_color='skyblue')
+
+    # Draw edges
+    nx.draw_networkx_edges(G, pos, edgelist=flight_routes, arrowstyle='->', arrowsize=20)
+
+    # Draw node labels with codes only
+    labels = {node: node for node in G.nodes}
+    nx.draw_networkx_labels(G, pos, labels=labels, font_size=10, verticalalignment='center')
+
+    # Highlight SCCs with different colors
+    colors = ['red', 'green', 'blue', 'yellow', 'orange']
+    for i, scc in enumerate(sccs):
+        nx.draw_networkx_nodes(G, pos, nodelist=scc, node_color=colors[i % len(colors)], node_size=700)
+
+    st.pyplot(plt)
 
 # Page 2: SCC Analysis
 elif page == "SCC Analysis":

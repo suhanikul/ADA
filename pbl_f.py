@@ -3,9 +3,6 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from collections import defaultdict
 
-print("PBL")
-print("hello")
-
 # Sample data representing Indian airports (nodes) and flight routes (edges)
 airports = {
     'DEL': 'Indira Gandhi International Airport (IGI)',
