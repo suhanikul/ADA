@@ -31,6 +31,7 @@ class Graph:
 
     def add_edge(self, u, v):
         self.graph[u].append(v)     
+  
 
 
 
@@ -54,6 +55,19 @@ class Graph:
                 sccs.append(scc)
         
         return sccs
+    
+ # Dijkstra's algorithm for shortest path
+def dijkstra(graph, source, target):
+    G = nx.DiGraph()
+    for u, v in graph:
+        G.add_edge(u, v, weight=1)  # Assuming all edges have weight 1
+    
+    try:
+        path = nx.shortest_path(G, source=source, target=target, weight='weight')
+        return path
+    except nx.NetworkXNoPath:
+        return None
+   
     
 # Streamlit Interface
 st.title("Airport Route Analyzer")
