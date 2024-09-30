@@ -33,8 +33,6 @@ class Graph:
         self.graph[u].append(v)     
   
 
-
-
     def kosaraju_scc(self):
         stack = []
         visited = {v: False for v in self.V}
@@ -55,7 +53,7 @@ class Graph:
                 sccs.append(scc)
         
         return sccs
-    
+      
  # Dijkstra's algorithm for shortest path
 def dijkstra(graph, source, target):
     G = nx.DiGraph()
@@ -68,7 +66,6 @@ def dijkstra(graph, source, target):
     except nx.NetworkXNoPath:
         return None
    
-    
 # Streamlit Interface
 st.title("Airport Route Analyzer")
 
