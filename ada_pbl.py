@@ -77,4 +77,25 @@ def dijkstra(graph, source, target):
 st.title("Airport Route Analyzer")
 
 # Sidebar for navigation
-page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization"])
+page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization", "Shortest Path"])
+
+# Page 1: Home
+if page == "Home":
+    st.image("AIRPORT FINDER.png", use_column_width=True)
+    st.write("Navigate through the sidebar to explore different features.")
+
+# Page 4: Shortest Path
+elif page == "Shortest Path":
+    st.header("Shortest Path Finder")
+
+    # Dropdowns for selecting source and destination airports
+    source_airport = st.selectbox("Select Source Airport", list(airports.keys()), format_func=lambda x: airports[x])
+    destination_airport = st.selectbox("Select Destination Airport", list(airports.keys()), format_func=lambda x: airports[x])
+
+    if st.button("Find Shortest Path"):
+        path = dijkstra(flight_routes, source_airport, destination_airport)
+        
+        if path:
+            st.success(f"The shortest path from {airports[source_airport]} to {airports[destination_airport]} is: {' -> '.join(path)}")
+        else:
+            st.error(f"No path found between {airports[source_airport]} and {airports[destination_airport]}")
