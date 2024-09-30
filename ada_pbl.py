@@ -41,7 +41,14 @@ class Graph:
             if not visited[neighbor]:
                 self.dfs_fill_order(neighbor, visited, stack)
         stack.append(v)
-        self.graph[u].append(v)     
+        self.graph[u].append(v)   
+
+    def transpose(self):
+        g_t = Graph(self.V)
+        for node in self.graph:
+            for neighbor in self.graph[node]:
+                g_t.add_edge(neighbor, node)
+        return g_t
 
     def dfs_collect_scc(self, v, visited, scc):
         visited[v] = True
@@ -81,7 +88,14 @@ def dijkstra(graph, source, target):
         return path
     except nx.NetworkXNoPath:
         return None
-   
+
+# Prepare the graph
+g = Graph(list(airports.keys()))
+for u, v in flight_routes:
+    g.add_edge(u, v)
+
+# Precompute SCCs
+sccs = g.kosaraju_scc()
 # Streamlit Interface
 st.title("Airport Route Analyzer")
 
