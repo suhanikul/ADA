@@ -31,6 +31,13 @@ class Graph:
 
     def add_edge(self, u, v):
         self.graph[u].append(v)     
+
+    def dfs_collect_scc(self, v, visited, scc):
+        visited[v] = True
+        scc.append(v)
+        for neighbor in self.graph[v]:
+            if not visited[neighbor]:
+                self.dfs_collect_scc(neighbor, visited, scc)
   
 
     def kosaraju_scc(self):
@@ -76,6 +83,27 @@ page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Vis
 if page == "Home":
     st.image("AIRPORT FINDER.png", use_column_width=True)
     st.write("Navigate through the sidebar to explore different features.")
+
+# Page 2: SCC Analysis
+elif page == "SCC Analysis":
+    st.header("Strongly Connected Components (SCC) Analysis")
+
+    # Dropdowns for selecting source and destination airports
+    source_airport = st.selectbox("Select Source Airport", list(airports.keys()), format_func=lambda x: airports[x])
+    destination_airport = st.selectbox("Select Destination Airport", list(airports.keys()), format_func=lambda x: airports[x])
+
+    if st.button("Check"):
+        # Find the SCC containing the source airport
+        scc_found = None
+        for scc in sccs:
+            if source_airport in scc:
+                scc_found = scc
+                break
+        
+        if scc_found and destination_airport in scc_found:
+            st.success(f"{airports[source_airport]} and {airports[destination_airport]} are in the same SCC.")
+        else:
+            st.error(f"{airports[source_airport]} and {airports[destination_airport]} are NOT in the same SCC.")
 
 # Page 4: Shortest Path
 elif page == "Shortest Path":
