@@ -74,3 +74,8 @@ st.title("Airport Route Analyzer")
 
 # Sidebar for navigation
 page = st.sidebar.selectbox("Choose a page", ["Home", "SCC Analysis", "Graph Visualization"])
+
+# Page 1: Home
+if page == "Home":
+    st.image("AIRPORT FINDER.png", use_column_width=True)
+    st.write("Navigate through the sidebar to explore different features.")
