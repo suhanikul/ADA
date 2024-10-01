@@ -50,8 +50,7 @@ class Graph:
         for neighbor in self.graph[v]:
             if not visited[neighbor]:
                 self.dfs_fill_order(neighbor, visited, stack)
-        stack.append(v)
-        self.graph[u].append(v)   
+        stack.append(v)  
 
     def transpose(self):
         g_t = Graph(self.V)
