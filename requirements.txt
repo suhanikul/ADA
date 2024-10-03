@@ -1,3 +1,4 @@
 streamlit==1.25.0  # Adjust the version if necessary
 matplotlib==3.8.0  # Adjust the version if necessary
 networkx==3.1      # Ensure compatibility with NetworkX algorithms
+pillow==9.4.0
