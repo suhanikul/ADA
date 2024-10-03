@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib
 import networkx as nx
 from collections import defaultdict
 import streamlit as st
@@ -117,15 +118,14 @@ if page == "Home":
     st.write("Navigate through the sidebar to explore different features.")
 
 
-# JIRA Task ID in Jira: AP-7 - correct order of pages
-# Page 2: SCC Analysis
 elif page == "SCC Analysis":
     st.header("Strongly Connected Components (SCC) Analysis")
-
+    
     # Dropdowns for selecting source and destination airports
     source_airport = st.selectbox("Select Source Airport", list(airports.keys()), format_func=lambda x: airports[x])
     destination_airport = st.selectbox("Select Destination Airport", list(airports.keys()), format_func=lambda x: airports[x])
 
+    # Add a button with a tooltip
     if st.button("Check"):
         # Find the SCC containing the source airport
         scc_found = None
@@ -138,6 +138,12 @@ elif page == "SCC Analysis":
             st.success(f"{airports[source_airport]} and {airports[destination_airport]} are in the same SCC.")
         else:
             st.error(f"{airports[source_airport]} and {airports[destination_airport]} are NOT in the same SCC.")
+
+    # Floating widget window with info
+    st.sidebar.info("Kosaraju's algorithm finds Strongly Connected Components (SCCs) in a directed graph using two depth-first searches (DFS). \
+                     First, it runs a DFS to record the finish times of vertices, then reverses the graph and runs a second DFS in order of those times to identify SCCs. \
+                    Its time complexity is O(V + E), where V is the number of vertices and E is the number of edges.")
+
 
 # Page 3: Graph Visualization
 elif page == "Graph Visualization":
@@ -174,6 +180,12 @@ elif page == "Graph Visualization":
 
     st.pyplot(plt)
 
+    # Floating widget window with info
+    st.sidebar.info("A Strongly Connected Component (SCC) is a subgraph where every vertex is reachable from every other vertex within that subgraph. \
+                    In a directed graph, SCCs group vertices that are mutually reachable. \
+                    Algorithms like Kosaraju's and Tarjan's are used to identify SCCs. \
+                    The time complexity for finding SCCs using Kosaraju's algorithm is O(V + E), where V is the number of vertices and E is the number of edges.")
+
 # Page 4: Shortest Path
 elif page == "Shortest Path":
     st.header("Shortest Path Finder")
@@ -189,3 +201,7 @@ elif page == "Shortest Path":
             st.success(f"The shortest path from {airports[source_airport]} to {airports[destination_airport]} is: {' -> '.join(path)}")
         else:
             st.error(f"No path found between {airports[source_airport]} and {airports[destination_airport]}")
+    # Floating widget window with info
+    st.sidebar.info(" Dijkstra's algorithm finds the shortest path from a source vertex to all others in a graph with non-negative weights.\
+                    It uses a priority queue to process vertices by their shortest known distance. \
+                    Its time complexity is O((V + E) log V), where V is the number of vertices and E is the number of edges.")
