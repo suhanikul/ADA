@@ -1,6 +1,6 @@
 import pytest
 from collections import defaultdict
-from ada_pbl import Graph, dijkstra
+from app import Graph, dijkstra
 
 # Sample data for testing
 airports = {
